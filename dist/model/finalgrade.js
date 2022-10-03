@@ -4,19 +4,15 @@ const mongoose_1 = require("mongoose");
 const finalGradeSchema = new mongoose_1.Schema({
     group_id: {
         type: Number,
-        require: true,
+        require: true
     },
-    course_id: {
-        type: Number,
-        require: true,
-    },
-    student_id: {
-        type: Number,
-        require: true,
+    student_name: {
+        type: String,
+        require: true
     },
     final_grade: {
         type: String,
-        require: true,
+        require: true
     },
     approved: {
         type: Boolean,

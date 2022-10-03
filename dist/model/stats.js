@@ -14,7 +14,7 @@ const statsSchema = new mongoose_1.Schema({
         type: Number,
         require: true
     },
-    aprobation_percentage: {
+    approbation_percentage: {
         type: Number,
         require: true
     },
@@ -22,7 +22,7 @@ const statsSchema = new mongoose_1.Schema({
         type: Number,
         require: true
     },
-    standart_deviation: {
+    standard_deviation: {
         type: Number,
         require: true
     },

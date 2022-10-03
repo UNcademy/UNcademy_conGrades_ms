@@ -22,18 +22,18 @@ const statsReader = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
 exports.statsReader = statsReader;
 const statsCreate = (listCourse, fails) => __awaiter(void 0, void 0, void 0, function* () {
     let part_per = 0;
-    let approv_per = 0;
+    let approved_per = 0;
     let aver_grade = 0;
     let stand_dev = 0;
     let best_grade = 0;
-    let worst_grade = 5;
+    let worst_grade = 50;
     for (let i = 0; i < listCourse.length; i++) {
         let element = listCourse[i];
-        let student = String(element.student_id);
+        let student = String(element.student_name);
         const elem_part = (fails[student] * 100) / 32;
         part_per = part_per + elem_part;
         if (element.approved == true) {
-            approv_per = approv_per + 1;
+            approved_per = approved_per + 1;
         }
         aver_grade = Number(aver_grade) + Number(element.final_grade);
         if (element.final_grade > best_grade) {
@@ -45,7 +45,7 @@ const statsCreate = (listCourse, fails) => __awaiter(void 0, void 0, void 0, fun
     }
     const id_group = listCourse[1].group_id;
     part_per = part_per / listCourse.length;
-    approv_per = (approv_per / listCourse.length) * 100;
+    approved_per = (approved_per / listCourse.length) * 100;
     aver_grade = Number(aver_grade) / listCourse.length;
     for (let i = 0; i < listCourse.length; i++) {
         let element = listCourse[i];
@@ -56,9 +56,9 @@ const statsCreate = (listCourse, fails) => __awaiter(void 0, void 0, void 0, fun
     const stats = new stats_1.default({
         group_id: id_group,
         participation_percentage: part_per,
-        aprobation_percentage: approv_per,
+        approbation_percentage: approved_per,
         average_grade: aver_grade,
-        standart_deviation: stand_dev,
+        standard_deviation: stand_dev,
         best_grade: best_grade,
         worst_grade: worst_grade
     });

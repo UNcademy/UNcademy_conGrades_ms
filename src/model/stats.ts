@@ -4,9 +4,9 @@ export interface StatsInt extends Document{
     group_id: Number,
 	course_id: Number,
 	participation_percentage: Number,
-	aprobation_percentage: Number,
+	approbation_percentage: Number,
 	average_grade: Number,
-	standart_deviation: Number,
+	standard_deviation: Number,
 	best_grade: Number,
 	worst_grade: Number
 }
@@ -24,7 +24,7 @@ const statsSchema = new Schema ({
         type:Number,
         require:true
     },
-	aprobation_percentage:{
+	approbation_percentage:{
         type:Number,
         require:true
     },
@@ -32,7 +32,7 @@ const statsSchema = new Schema ({
         type:Number,
         require:true
     },
-	standart_deviation:{
+	standard_deviation:{
         type:Number,
         require:true
     },

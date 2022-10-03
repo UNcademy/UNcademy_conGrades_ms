@@ -1,11 +1,17 @@
 import { Router } from "express";
-import { finalgradeCreate, finalgradeReaderByGroup, finalgradeReaderByStudent } from "../controllers/finalgradeController";
+import {
+    finalGradeCreate,
+    finalGradeReaderByGroup,
+    finalGradeReaderByGroupAndStudent,
+    finalGradeReaderByStudent
+} from "../controllers/finalgradeController";
 import { statsReader} from "../controllers/stastController";
 const router = Router();
 
-router.post("/finalgrade/save", finalgradeCreate)
+router.post("/finalgrade/save", finalGradeCreate)
 router.get("/stats/:id", statsReader)
-router.get("/finalgrade/group/:id", finalgradeReaderByGroup)
-router.get("/finalgrade/student/:groupId/:studentId", finalgradeReaderByStudent)
+router.get("/finalgrade/group/:id", finalGradeReaderByGroup)
+router.get("/finalgrade/student/:groupId/:studentName", finalGradeReaderByGroupAndStudent)
+router.get("/finalgrade/student/:studentName", finalGradeReaderByStudent)
 
 export default router;

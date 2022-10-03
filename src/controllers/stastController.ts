@@ -10,18 +10,18 @@ export const statsReader = async (req:Request, res:Response) => {
 
 export const statsCreate = async (listCourse: any, fails: any) => {
     let part_per: number = 0
-    let approv_per: number = 0
+    let approved_per: number = 0
     let aver_grade:Number = 0
     let stand_dev:number = 0
     let best_grade:number = 0
-    let worst_grade: number = 5
+    let worst_grade: number = 50
     for (let i=0;i < listCourse.length;i++){
         let element = listCourse[i]
-        let student = String(element.student_id)
+        let student = String(element.student_name)
         const elem_part:number = (fails[student]*100)/32
         part_per = part_per + elem_part
         if (element.approved == true){
-            approv_per = approv_per+1
+            approved_per = approved_per+1
         }
         aver_grade = Number(aver_grade) + Number(element.final_grade)
         if (element.final_grade > best_grade){
@@ -33,7 +33,7 @@ export const statsCreate = async (listCourse: any, fails: any) => {
     }
     const id_group:Number = listCourse[1].group_id
     part_per = part_per/listCourse.length
-    approv_per = (approv_per/listCourse.length)*100
+    approved_per = (approved_per/listCourse.length)*100
     aver_grade = Number(aver_grade)/listCourse.length
     for (let i=0;i < listCourse.length;i++){
         let element = listCourse[i]
@@ -44,9 +44,9 @@ export const statsCreate = async (listCourse: any, fails: any) => {
     const stats = new Stats({
         group_id:id_group,
         participation_percentage:part_per,
-        aprobation_percentage:approv_per,
+        approbation_percentage:approved_per,
         average_grade:aver_grade,
-        standart_deviation:stand_dev,
+        standard_deviation:stand_dev,
         best_grade:best_grade,
         worst_grade:worst_grade
     })

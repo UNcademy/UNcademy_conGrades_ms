@@ -12,58 +12,63 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.finalgradeCreate = exports.finalgradeReaderByStudent = exports.finalgradeReaderByGroup = void 0;
+exports.finalGradeCreate = exports.finalGradeReaderByStudent = exports.finalGradeReaderByGroupAndStudent = exports.finalGradeReaderByGroup = void 0;
 const finalgrade_1 = __importDefault(require("../model/finalgrade"));
 const stastController_1 = require("./stastController");
-const finalgradeReaderByGroup = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const finalGradeReaderByGroup = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id_group = req.params.id;
-    const finalgrade = yield finalgrade_1.default.find({ group_id: id_group });
-    res.send(finalgrade);
+    const finalGrade = yield finalgrade_1.default.find({ group_id: id_group });
+    res.send(finalGrade);
 });
-exports.finalgradeReaderByGroup = finalgradeReaderByGroup;
-const finalgradeReaderByStudent = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+exports.finalGradeReaderByGroup = finalGradeReaderByGroup;
+const finalGradeReaderByGroupAndStudent = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id_group = req.params.groupId;
-    const id_student = req.params.studentId;
-    const finalgrade = yield finalgrade_1.default.find({ group_id: id_group, student_id: id_student });
-    res.send(finalgrade);
+    const name_student = req.params.studentName;
+    const finalGrade = yield finalgrade_1.default.find({ group_id: id_group, student_name: name_student });
+    res.send(finalGrade);
 });
-exports.finalgradeReaderByStudent = finalgradeReaderByStudent;
-const finalgradeCreate = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+exports.finalGradeReaderByGroupAndStudent = finalGradeReaderByGroupAndStudent;
+const finalGradeReaderByStudent = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const name_student = req.params.studentName;
+    const finalGrade = yield finalgrade_1.default.find({ student_name: name_student });
+    res.send(finalGrade);
+});
+exports.finalGradeReaderByStudent = finalGradeReaderByStudent;
+const finalGradeCreate = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     let fails = {};
     for (let i = 0; i < req.body.length; i++) {
         let element = req.body[i];
-        if (yield finalgrade_1.default.findOne({ student_id: element.id_estudiante })) {
-            const thisFinalGrade = yield finalgrade_1.default.findOne({ student_id: element.id_estudiante });
-            let newVal = (element.porcentaje * element.valor_numerico) / 100;
+        if (yield finalgrade_1.default.findOne({ student_name: element.studentName })) {
+            const thisFinalGrade = yield finalgrade_1.default.findOne({ student_name: element.studentName });
+            let newVal = (element.weight * element.grade) / 100;
             newVal = Number(thisFinalGrade === null || thisFinalGrade === void 0 ? void 0 : thisFinalGrade.final_grade) + Number(newVal);
             let approvedVal = true;
-            if (newVal < 3 && (thisFinalGrade === null || thisFinalGrade === void 0 ? void 0 : thisFinalGrade.approved) != false) {
+            if (newVal < 30 && (thisFinalGrade === null || thisFinalGrade === void 0 ? void 0 : thisFinalGrade.approved) != false) {
                 approvedVal = false;
             }
-            yield finalgrade_1.default.findOneAndUpdate({ student_id: element.id_estudiante }, { final_grade: newVal, approved: approvedVal });
+            yield finalgrade_1.default.findOneAndUpdate({ student_name: element.studentName }, { final_grade: newVal, approved: approvedVal });
         }
         else {
-            const finalVal = (element.porcentaje * element.valor_numerico) / 100;
+            const finalVal = (element.weight * element.grade) / 100;
             let approvedVal = true;
-            if (finalVal < 3 || element.fallas > 8) {
+            if (finalVal < 30 || element.absences > 8) {
                 approvedVal = false;
             }
-            const id_student = String(element.id_estudiante);
-            fails[id_student] = element.fallas;
+            const name_student = String(element.studentName);
+            fails[name_student] = element.absences;
             const finalGrade = new finalgrade_1.default({
-                group_id: element.id_lista_clase,
-                student_id: element.id_estudiante,
+                group_id: element.courseGroup,
+                student_name: element.studentName,
                 final_grade: finalVal,
                 approved: approvedVal
             });
             yield finalGrade.save();
         }
     }
-    ;
     let course_id = req.body[1];
-    course_id = course_id.id_lista_clase;
+    course_id = course_id.courseGroup;
     const listCourse = yield finalgrade_1.default.find({ group_id: course_id });
-    (0, stastController_1.statsCreate)(listCourse, fails);
+    yield (0, stastController_1.statsCreate)(listCourse, fails);
     res.send('Done');
 });
-exports.finalgradeCreate = finalgradeCreate;
+exports.finalGradeCreate = finalGradeCreate;
