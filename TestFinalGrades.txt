@@ -1,0 +1,45 @@
+[
+    {
+        "id_lista_clase": 1,
+        "fallas":2,
+        "id_estudiante": 1,
+        "valor_numerico":3.5,
+        "porcentaje":20
+    },
+    {
+        "id_lista_clase": 1,
+        "fallas":5,
+        "id_estudiante": 2,
+        "valor_numerico":4.5,
+        "porcentaje":30
+    },
+    {
+        "id_lista_clase": 1,
+        "fallas":3,
+        "id_estudiante": 1,
+        "valor_numerico":3.0,
+        "porcentaje":30
+    },
+    {
+        "id_lista_clase": 1,
+        "fallas":4,
+        "id_estudiante": 2,
+        "valor_numerico":3.5,
+        "porcentaje":20
+    },
+    {
+        "id_lista_clase": 1,
+        "fallas":2,
+        "id_estudiante": 1,
+        "valor_numerico":2.5,
+        "porcentaje":50
+    },
+    {
+        "id_lista_clase": 1,
+        "fallas":5,
+        "id_estudiante": 2,
+        "valor_numerico":4.0,
+        "porcentaje":50
+    }
+]
+-----------------------------------------------------------------------------------------------------------------

@@ -1,0 +1,17 @@
+version: '3'
+
+services:
+  uncademy_congrades_ms:
+    container_name: UNcademy_conGrades_ms
+    restart: always
+    build: .
+    ports:
+      - "3000:3000"
+    links:
+      - uncademy_congrades_db
+    
+  uncademy_congrades_db:
+    container_name: UNcademy_conGrades_db
+    image: mongo
+    ports:
+    - "27018:27017"

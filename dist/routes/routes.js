@@ -1,0 +1,11 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const finalgradeController_1 = require("../controllers/finalgradeController");
+const stastController_1 = require("../controllers/stastController");
+const router = (0, express_1.Router)();
+router.post("/finalgrade/save", finalgradeController_1.finalgradeCreate);
+router.get("/stats/:id", stastController_1.statsReader);
+router.get("/finalgrade/group/:id", finalgradeController_1.finalgradeReaderByGroup);
+router.get("/finalgrade/student/:groupId/:studentId", finalgradeController_1.finalgradeReaderByStudent);
+exports.default = router;
