@@ -3,8 +3,10 @@ import {model, Schema, Document } from "mongoose";
 export interface FinalGradeInt extends Document{
     group_id: Number,
     student_name: String,
-    final_grade: Number,
-    approved: Boolean
+    final_grade: String,
+    absences:Number,
+    approved: Boolean,
+    reason:String
 }
 
 const finalGradeSchema = new Schema ({
@@ -20,9 +22,16 @@ const finalGradeSchema = new Schema ({
         type: String,
         require: true
     },
+    absences:{
+        type:Number,
+        require:true
+    },
     approved:{
         type: Boolean,
         require:true
+    },
+    reason:{
+        type: String
     }
 });
 

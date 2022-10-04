@@ -6,10 +6,6 @@ const statsSchema = new mongoose_1.Schema({
         type: Number,
         require: true
     },
-    course_id: {
-        type: Number,
-        require: true
-    },
     participation_percentage: {
         type: Number,
         require: true
@@ -19,20 +15,16 @@ const statsSchema = new mongoose_1.Schema({
         require: true
     },
     average_grade: {
-        type: Number,
-        require: true
+        type: Number
     },
     standard_deviation: {
-        type: Number,
-        require: true
+        type: Number
     },
     best_grade: {
-        type: Number,
-        require: true
+        type: Number
     },
     worst_grade: {
-        type: Number,
-        require: true
+        type: Number
     }
 });
 exports.default = (0, mongoose_1.model)('Stats', statsSchema);

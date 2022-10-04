@@ -38,21 +38,52 @@ const finalGradeCreate = (req, res) => __awaiter(void 0, void 0, void 0, functio
     let fails = {};
     for (let i = 0; i < req.body.length; i++) {
         let element = req.body[i];
-        if (yield finalgrade_1.default.findOne({ student_name: element.studentName })) {
+        let thisGrade = +element.grade;
+        let approvedVal = true;
+        let reason = null;
+        if ((yield finalgrade_1.default.findOne({ student_name: element.studentName })) && !Number.isNaN(thisGrade)) {
             const thisFinalGrade = yield finalgrade_1.default.findOne({ student_name: element.studentName });
             let newVal = (element.weight * element.grade) / 100;
             newVal = Number(thisFinalGrade === null || thisFinalGrade === void 0 ? void 0 : thisFinalGrade.final_grade) + Number(newVal);
-            let approvedVal = true;
-            if (newVal < 30 && (thisFinalGrade === null || thisFinalGrade === void 0 ? void 0 : thisFinalGrade.approved) != false) {
+            if (newVal < 30) {
                 approvedVal = false;
+                if (element.absences > 8) {
+                    reason = "Absences and Grades";
+                }
+                else {
+                    reason = "Grades";
+                }
             }
-            yield finalgrade_1.default.findOneAndUpdate({ student_name: element.studentName }, { final_grade: newVal, approved: approvedVal });
+            else if (element.absences < 8) {
+                approvedVal = true;
+                reason = null;
+            }
+            yield finalgrade_1.default.findOneAndUpdate({ student_name: element.studentName }, { final_grade: newVal, approved: approvedVal, reason: reason });
         }
         else {
-            const finalVal = (element.weight * element.grade) / 100;
-            let approvedVal = true;
-            if (finalVal < 30 || element.absences > 8) {
+            let finalVal;
+            if (Number.isNaN(thisGrade)) {
+                finalVal = element.grade;
+                if (element.grade == "Reprobada") {
+                    approvedVal = false;
+                    reason = "Grades";
+                }
+            }
+            else {
+                finalVal = (element.weight * element.grade) / 100;
+                if (finalVal < (element.weight * 30) / 100) {
+                    approvedVal = false;
+                    reason = "Grades";
+                }
+            }
+            if (element.absences > 8) {
                 approvedVal = false;
+                if (reason == null) {
+                    reason = "Absences";
+                }
+                else {
+                    reason = "Absences and Grades";
+                }
             }
             const name_student = String(element.studentName);
             fails[name_student] = element.absences;
@@ -60,7 +91,9 @@ const finalGradeCreate = (req, res) => __awaiter(void 0, void 0, void 0, functio
                 group_id: element.courseGroup,
                 student_name: element.studentName,
                 final_grade: finalVal,
-                approved: approvedVal
+                absences: element.absences,
+                approved: approvedVal,
+                reason: reason
             });
             yield finalGrade.save();
         }

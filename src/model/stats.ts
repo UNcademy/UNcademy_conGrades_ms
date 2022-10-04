@@ -2,7 +2,6 @@ import {model, Schema, Document } from "mongoose";
 
 export interface StatsInt extends Document{
     group_id: Number,
-	course_id: Number,
 	participation_percentage: Number,
 	approbation_percentage: Number,
 	average_grade: Number,
@@ -16,10 +15,6 @@ const statsSchema = new Schema ({
         type: Number,
         require:true
     },
-	course_id:{
-        type:Number,
-        require:true
-    },
 	participation_percentage:{
         type:Number,
         require:true
@@ -29,20 +24,16 @@ const statsSchema = new Schema ({
         require:true
     },
 	average_grade:{
-        type:Number,
-        require:true
+        type:Number
     },
 	standard_deviation:{
-        type:Number,
-        require:true
+        type:Number
     },
 	best_grade:{
-        type:Number,
-        require:true
+        type:Number
     },
 	worst_grade:{
-        type:Number,
-        require:true
+        type:Number
     }
 });
 

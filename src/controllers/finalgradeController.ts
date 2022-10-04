@@ -25,21 +25,52 @@ export const finalGradeCreate = async (req:Request, res:Response) => {
     let fails:{[name: string]: number}={}
     for (let i=0; i<req.body.length;i++) {
         let element = req.body[i]
-        if (await FinalGrade.findOne({student_name:element.studentName})){
+        let thisGrade:number = +element.grade
+        let approvedVal = true;
+        let reason = null;
+        if (await FinalGrade.findOne({student_name:element.studentName}) && !Number.isNaN(thisGrade)){
             const thisFinalGrade = await FinalGrade.findOne({student_name:element.studentName})
             let newVal = (element.weight*element.grade)/100
             newVal = Number(thisFinalGrade?.final_grade) + Number(newVal)
-            let approvedVal = true;
-            if (newVal < 30 && thisFinalGrade?.approved != false){
+            if (newVal < 30){
                 approvedVal = false;
+                if (element.absences > 8){
+                    reason = "Absences and Grades"
+                }
+                else{
+                    reason = "Grades"
+                }
             }
-            await FinalGrade.findOneAndUpdate({student_name:element.studentName},{final_grade: newVal, approved:approvedVal})
+            else if(element.absences < 8){
+                approvedVal = true;
+                reason = null;
+            }
+            await FinalGrade.findOneAndUpdate({student_name:element.studentName},{final_grade: newVal, approved:approvedVal, reason:reason})
         }
         else{
-            const finalVal = (element.weight*element.grade)/100;
-            let approvedVal = true;
-            if (finalVal < 30 || element.absences > 8){
+            let finalVal:number
+            if(Number.isNaN(thisGrade)){
+                finalVal = element.grade
+                if (element.grade == "Reprobada"){
+                    approvedVal = false;
+                    reason = "Grades"
+                }
+            }
+            else {
+                finalVal = (element.weight * element.grade) / 100;
+                if (finalVal < (element.weight * 30) / 100) {
+                    approvedVal = false;
+                    reason = "Grades"
+                }
+            }
+            if (element.absences > 8){
                 approvedVal = false;
+                if (reason == null){
+                    reason = "Absences";
+                }
+                else{
+                    reason = "Absences and Grades"
+                }
             }
             const name_student = String(element.studentName)
             fails[name_student] = element.absences
@@ -47,7 +78,9 @@ export const finalGradeCreate = async (req:Request, res:Response) => {
                 group_id: element.courseGroup,
                 student_name: element.studentName,
                 final_grade:finalVal,
-                approved:approvedVal
+                absences: element.absences,
+                approved:approvedVal,
+                reason:reason
             });
             await finalGrade.save();
         }
