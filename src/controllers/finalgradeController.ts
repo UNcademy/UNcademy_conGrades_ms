@@ -85,7 +85,7 @@ export const finalGradeCreate = async (req:Request, res:Response) => {
             await finalGrade.save();
         }
     }
-    let course_id = req.body[1]
+    let course_id = req.body[0]
     course_id = course_id.courseGroup
     const listCourse = await FinalGrade.find({group_id:course_id})
     await statsCreate(listCourse, fails)

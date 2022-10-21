@@ -1,2 +1,4 @@
 node-modules
 dist
+.idea
+.git
