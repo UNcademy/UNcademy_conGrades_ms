@@ -8,5 +8,7 @@ RUN npm install
 
 COPY . .
 
+ENV OPENSSL_CONF=/opt/openssl.cnf
+
 EXPOSE 3000
 CMD ["npm","start"]
