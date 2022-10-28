@@ -36,13 +36,14 @@ const finalGradeReaderByStudent = (req, res) => __awaiter(void 0, void 0, void 0
 exports.finalGradeReaderByStudent = finalGradeReaderByStudent;
 const finalGradeCreate = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     let fails = {};
+    console.log(req.body);
     for (let i = 0; i < req.body.length; i++) {
         let element = req.body[i];
         let thisGrade = +element.grade;
         let approvedVal = true;
         let reason = null;
-        if ((yield finalgrade_1.default.findOne({ student_name: element.studentName })) && !Number.isNaN(thisGrade)) {
-            const thisFinalGrade = yield finalgrade_1.default.findOne({ student_name: element.studentName });
+        if ((yield finalgrade_1.default.findOne({ student_name: element.studentName, group_id: element.courseGroup })) && !Number.isNaN(thisGrade)) {
+            const thisFinalGrade = yield finalgrade_1.default.findOne({ student_name: element.studentName, group_id: element.courseGroup });
             let newVal = (element.weight * element.grade) / 100;
             newVal = Number(thisFinalGrade === null || thisFinalGrade === void 0 ? void 0 : thisFinalGrade.final_grade) + Number(newVal);
             if (newVal < 30) {
@@ -58,7 +59,7 @@ const finalGradeCreate = (req, res) => __awaiter(void 0, void 0, void 0, functio
                 approvedVal = true;
                 reason = null;
             }
-            yield finalgrade_1.default.findOneAndUpdate({ student_name: element.studentName }, { final_grade: newVal, approved: approvedVal, reason: reason });
+            yield finalgrade_1.default.findOneAndUpdate({ student_name: element.studentName, group_id: element.courseGroup }, { final_grade: newVal, approved: approvedVal, reason: reason });
         }
         else {
             let finalVal;
@@ -98,7 +99,7 @@ const finalGradeCreate = (req, res) => __awaiter(void 0, void 0, void 0, functio
             yield finalGrade.save();
         }
     }
-    let course_id = req.body[1];
+    let course_id = req.body[0];
     course_id = course_id.courseGroup;
     const listCourse = yield finalgrade_1.default.find({ group_id: course_id });
     yield (0, stastController_1.statsCreate)(listCourse, fails);

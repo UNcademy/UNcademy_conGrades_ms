@@ -52,9 +52,9 @@ const statsCreate = (listCourse, fails) => __awaiter(void 0, void 0, void 0, fun
             stand_dev = null;
         }
     }
-    const id_group = listCourse[1].group_id;
+    const id_group = listCourse[0].group_id;
     part_per = part_per / listCourse.length;
-    approved_per = 100 - ((approved_per / listCourse.length) * 100);
+    approved_per = ((approved_per / listCourse.length) * 100);
     const finalGrade = +listCourse[1].final_grade;
     if (!Number.isNaN(finalGrade)) {
         aver_grade = Number(aver_grade) / listCourse.length;

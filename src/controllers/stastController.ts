@@ -41,9 +41,9 @@ export const statsCreate = async (listCourse: any, fails: any) => {
         }
 
     }
-    const id_group:number = listCourse[1].group_id
+    const id_group:number = listCourse[0].group_id
     part_per = part_per/listCourse.length
-    approved_per = 100-((approved_per/listCourse.length)*100)
+    approved_per = ((approved_per/listCourse.length)*100)
     const finalGrade:number = +listCourse[1].final_grade
     if (!Number.isNaN(finalGrade)){
         aver_grade = Number(aver_grade)/listCourse.length

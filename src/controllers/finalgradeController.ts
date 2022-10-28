@@ -28,8 +28,8 @@ export const finalGradeCreate = async (req:Request, res:Response) => {
         let thisGrade:number = +element.grade
         let approvedVal = true;
         let reason = null;
-        if (await FinalGrade.findOne({student_name:element.studentName}) && !Number.isNaN(thisGrade)){
-            const thisFinalGrade = await FinalGrade.findOne({student_name:element.studentName})
+        if (await FinalGrade.findOne({student_name:element.studentName,group_id:element.courseGroup}) && !Number.isNaN(thisGrade)){
+            const thisFinalGrade = await FinalGrade.findOne({student_name:element.studentName,group_id:element.courseGroup})
             let newVal = (element.weight*element.grade)/100
             newVal = Number(thisFinalGrade?.final_grade) + Number(newVal)
             if (newVal < 30){
@@ -45,7 +45,7 @@ export const finalGradeCreate = async (req:Request, res:Response) => {
                 approvedVal = true;
                 reason = null;
             }
-            await FinalGrade.findOneAndUpdate({student_name:element.studentName},{final_grade: newVal, approved:approvedVal, reason:reason})
+            await FinalGrade.findOneAndUpdate({student_name:element.studentName,group_id:element.courseGroup},{final_grade: newVal, approved:approvedVal, reason:reason})
         }
         else{
             let finalVal:number

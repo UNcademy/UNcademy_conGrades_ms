@@ -21,7 +21,7 @@ export const actGenerator = async(req:Request, res:Response) => {
         }
     };
     const finalGrades = req.body;
-    const fileName = "act"+ finalGrades.gradesList[0].groupId + ".pdf";
+    const fileName = "act"+ finalGrades.gradesList[0].group_id + ".pdf";
     const document = {
         html: html,
         data: {

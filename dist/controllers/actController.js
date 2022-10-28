@@ -9,12 +9,13 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.actGenerator = void 0;
+exports.getAct = exports.actGenerator = void 0;
 //Required package
 const pdf = require("pdf-creator-node");
 const fs = require("fs");
+const path = require('path');
 const actGenerator = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const html = fs.readFileSync("../template.html", "utf8");
+    const html = fs.readFileSync(path.join(__dirname, '../template/template.html'), "utf8");
     const options = {
         format: "A3",
         orientation: "portrait",
@@ -28,24 +29,35 @@ const actGenerator = (req, res) => __awaiter(void 0, void 0, void 0, function* (
             contents: '<p>Firmado electrónicamente</p>'
         }
     };
-    const fileName = "act" + req.body.gradeList[0].groupId + ".pdf";
+    const finalGrades = req.body;
+    const fileName = "act" + finalGrades.gradesList[0].group_id + ".pdf";
     const document = {
         html: html,
         data: {
             finalGrades: req.body,
         },
-        path: "./docs/" + fileName,
+        path: "dist/docs/" + fileName,
     };
     pdf.create(document, options)
-        .then((res) => {
-        console.log(res);
+        .then((ans) => {
+        console.log(ans);
+        res.send(ans);
     })
         .catch((error) => {
         console.error(error);
     });
-    const filepath = 'http://localhost:3000/docs/' + fileName;
-    res.render('download', {
-        path: filepath
-    });
 });
 exports.actGenerator = actGenerator;
+const getAct = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const pdf2base64 = require('pdf-to-base64');
+    const fileName = "act" + req.params.actId + ".pdf";
+    pdf2base64(path.join(__dirname, '../docs', fileName))
+        .then((response) => {
+        res.send(response);
+    })
+        .catch((error) => {
+        console.log(error);
+        res.send(error);
+    });
+});
+exports.getAct = getAct;

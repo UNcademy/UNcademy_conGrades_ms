@@ -35,7 +35,7 @@
         </td>
         <td width="30%" align="right" bgcolor="#ffe77b" style="background-color: #fff;">
             <h4 style="font-weight: 700;color: #000000;">Fecha: {{finalGrades.currentDate}}</h4>
-            <h4 style="font-weight: 700;color: #000000;">Acta No: {{finalGrades.gradesList.0.groupId}}</h4>
+            <h4 style="font-weight: 700;color: #000000;">Acta No: {{finalGrades.gradesList.0.group_id}}</h4>
         </td>
     </tr>
 </table>
@@ -52,8 +52,8 @@
     <tbody>
     {{#each finalGrades.gradesList}}
     <tr>
-        <td width="20%">{{this.studentName}}</td>
-        <td width="10%">{{this.finalGrade}}</td>
+        <td width="20%">{{this.student_name}}</td>
+        <td width="10%">{{this.final_grade}}</td>
         <td width="10%">{{this.absences}}</td>
         <td width="10%">{{this.approved}}</td>
         <td width="10%">{{this.reason}}</td>
